@@ -58,6 +58,32 @@ vector<string> split_url(const string& str) {
   return ret;
 }
 
+string assembleUrl(const vector<string>& vec) {
+  if (vec.empty()) {
+    return "";
+  }
+
+  stringstream out;
+  vector<string>::const_iterator iter = vec.begin();
+
+  out << "http://";
+  
+  out << *iter;
+  while(++iter != vec.end()) {
+    out << "/";
+    out << *iter;
+  }
+
+  return out.str();
+}
+
+string followRelative(const string& url, const string& page) {
+  vector<string> split = split_url(skipProto(url));
+  // replace the last part of the url with 'page'
+  split[split.size() - 1] = page;
+  return assembleUrl(split);
+}
+
 bool is_number(char c) {
   return isdigit(c);
 }
@@ -134,4 +160,8 @@ void parseUrl(const string& url, string& series, string& chap, string& page) {
   
   int pg = reduceToInt(split[5]);
   page = itos(pg);
+}
+
+bool isExt(const string& str, const string& ext) {
+  return (exten(str) == ext);
 }

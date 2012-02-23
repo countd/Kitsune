@@ -9,6 +9,9 @@ using std::string;
 using std::ofstream;
 using std::find_end;
 
+using std::cout;
+using std::endl;
+
 size_t writeToString(char *data, size_t size, size_t nmemb, string *buffer) {
   size_t result = 0;
   if (buffer != NULL) {
@@ -60,4 +63,5 @@ void getPicture(const string& url, const string& dir, const string& series, cons
   curl_easy_perform(curl);
 
   curl_easy_cleanup(curl);
+  cout << "Fetched " << fullname << endl;
 }

@@ -1,8 +1,7 @@
 #ifndef GUARD_MANGAGETTER_H
 #define GUARD_MANGAGETTER_H
 #include <string>
+#include <vector>
 
-void getImageByUrl(const std::string&,const std::string&);
-std::string parseXHTMLForNext(const std::string&);
-std::string parseXHTMLForPrev(const std::string&);
+void getChapter(const std::string& url, const std::string& dir);
 #endif

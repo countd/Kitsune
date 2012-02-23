@@ -3,17 +3,36 @@ CFLAGS=-c -Wall
 CURLLIBS = $(shell curl-config --libs)
 LIBXMLFLAGS = $(shell xml2-config --cflags)
 LIBXMLLIBS = $(shell xml2-config --libs)
-EXECUTABLE=tester
+EXECUTABLE=kitsune
 
-all: library $(EXECUTABLE)
+# Libraries is used to build two separate .dll/.so files for dev cycles (to spend less time compiling)
+# kitsunelib and striplib/stripexec are meant for dist version, building everything into a single lib
+# all also compiles a basic interface -- command line taking two arguments: a url and a dir
 
-$(EXECUTABLE): library main.o
-	$(CC) main.o -o $(EXECUTABLE) -L. -lmangagetter -lurlgetter
 
-main.o: main.cpp
-	$(CC) $(CFLAGS) main.cpp -o main.o
+all: libkitsune.dll $(EXECUTABLE)
+	strip --strip-unneeded $(EXECUTABLE)
+	strip --strip-unneeded libkitsune.dll
 
-library: liburlgetter.dll libmangagetter.dll
+stripexec: $(EXECUTABLE)
+	strip --strip-unneeded $(EXECUTABLE)
+
+$(EXECUTABLE): interface.o
+	$(CC) interface.o -o $(EXECUTABLE) -L. -lkitsune
+
+interface.o: interface.cpp
+	$(CC) $(CFLAGS) interface.cpp -o interface.o
+
+striplib: libkitsune.dll
+	strip --strip-unneeded libkitsune.dll
+
+kitsunelib: libkitsune.dll
+
+libkitsune.dll: MangaGetter.o StringAux.o XMLAux.o UrlGetter.o
+	$(CC) -shared -Wl,-soname,libkitsune.dll -o libkitsune.dll MangaGetter.o StringAux.o XMLAux.o UrlGetter.o $(LIBXMLLIBS) $(CURLLIBS)
+	cp MangaGetter.h Kitsune.h
+
+libraries: liburlgetter.dll libmangagetter.dll
 
 libmangagetter.dll: MangaGetter.o liburlgetter.dll StringAux.o XMLAux.o
 	$(CC) -shared -Wl,-soname,libmangagetter.dll -o libmangagetter.dll MangaGetter.o StringAux.o XMLAux.o $(LIBXMLLIBS) -L. -lurlgetter
@@ -34,4 +53,4 @@ StringAux.o: StringAux.cpp
 	$(CC) $(CFLAGS) StringAux.cpp -o StringAux.o
 
 clean:
-	rm *o *dll *exe
+	rm *o *dll *exe Kitsune.h
