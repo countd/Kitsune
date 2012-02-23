@@ -12,7 +12,7 @@ using std::string;
 using std::cout;
 using std::endl;
 
-void parseXHTMLForImage(string xhtml, string& ret) {
+string parseXHTMLForImage(string xhtml) {
   const char* buffer = xhtml.c_str();
   int size = xhtml.size();
   
@@ -22,7 +22,7 @@ void parseXHTMLForImage(string xhtml, string& ret) {
   doc = xmlParseMemory(buffer, size);
   if (doc == NULL) {
     std::cerr << "Could not parse XHTML" << endl;
-    return;
+    return "";
   } 
 
   cur = xmlDocGetRootElement(doc);
@@ -30,7 +30,7 @@ void parseXHTMLForImage(string xhtml, string& ret) {
   if (cur == NULL) {
     std::cerr << "Empty XHTML" << endl;
     xmlFreeDoc(doc);
-    return;
+    return "";
   }
 
   cur = findSubNode(cur, "body");
@@ -41,12 +41,11 @@ void parseXHTMLForImage(string xhtml, string& ret) {
   
   xmlFreeDoc(doc);
 
-  ret = imgUrl;
+  return imgUrl;
 }
 
 void getImageByUrlAndData(string url, string dir, string series, string chap, string page) {
-  string imgUrl;
-  parseXHTMLForImage(getPage(url), imgUrl);
+  string imgUrl =  parseXHTMLForImage(getPage(url));
   
   getPicture(imgUrl, dir, series, chap, page);
 }
