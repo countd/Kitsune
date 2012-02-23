@@ -3,12 +3,11 @@
 #include <algorithm>
 #include <iostream>
 #include <curl/curl.h>
+#include "StringAux.h"
 
 using std::string;
 using std::ofstream;
 using std::find_end;
-
-typedef string::size_type str_size;
 
 size_t writeToString(char *data, size_t size, size_t nmemb, string *buffer) {
   size_t result = 0;
@@ -42,35 +41,6 @@ string getPage(string url) {
 static size_t writeToFile(char *data, size_t size, size_t nmemb, ofstream *file) {
   file->write(data,size*nmemb);
   return size*nmemb;
-}
-
-string leadZeros(string num) {
-  str_size currentSize = num.size();
-  if (currentSize == 3) {
-    return num;
-  } else if (currentSize == 2) {
-    return "0" + num;
-  } else if (currentSize == 1) {
-    return "00" + num;
-  } else {
-    std::cerr << "Non-standard string-int!" << std::endl;
-    return num;
-  }
-}
-
-string exten(string file) {
-  string::iterator iter;
-  string dot = ".";
-  iter = find_end(file.begin(),file.end(),
-		  dot.begin(), dot.end());
-  // iter points to ., so we advance it
-  iter++;
-  if (iter != file.end()) {
-    string ext(iter,file.end()); // correct value?
-    return ext;
-  } else {
-    return "";
-  }
 }
 
 void getPicture(string url, string dir, string series, string chap, string page) {

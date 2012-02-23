@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <cctype>
+#include <sstream>
 
 using std::string;
 using std::vector;
@@ -11,6 +12,7 @@ using std::isdigit;
 using std::find_if;
 using std::search;
 using std::atoi;
+using std::stringstream;
 
 bool is_delim(char c) {
   return c == '/';
@@ -76,6 +78,57 @@ int reduceToInt(const string& str) {
     
     if (i != str.end())
       return atoi(string(i,j).c_str());
-    return -1;
   }
+  return -1;
+}
+
+string leadZeros(string num) {
+  string::size_type currentSize = num.size();
+  if (currentSize == 3) {
+    return num;
+  } else if (currentSize == 2) {
+    return "0" + num;
+  } else if (currentSize == 1) {
+    return "00" + num;
+  } else {
+    //    std::clog << "Non-standard string-int!" << std::endl;
+    return num;
+  }
+}
+
+string exten(string file) {
+  string::iterator iter;
+  string dot = ".";
+  iter = find_end(file.begin(),file.end(),
+		  dot.begin(), dot.end());
+  // iter points to ., so we advance it
+  iter++;
+  if (iter != file.end()) {
+    string ext(iter,file.end()); // correct value?
+    return ext;
+  } else {
+    return "";
+  }
+}
+
+string itos(int i) {
+  stringstream out;
+  out << i;
+  return out.str();
+}
+
+void parseUrl(string url, string& series, string& chap, string& page) {
+  vector<string> split = split_url(skipProto(url));
+  // first 2 elements are www.mangafox.com and manga, so we don't work with them
+
+  series.clear();
+  replace_copy(split[2].begin(), split[2].end(),
+	       back_inserter(series), '_', '-');
+  // Next element is volume, which is unneeded, so we skip it
+
+  int chapter = reduceToInt(split[4]);
+  chap = itos(chapter);
+  
+  int pg = reduceToInt(split[5]);
+  page = itos(pg);
 }

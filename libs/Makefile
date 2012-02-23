@@ -15,19 +15,22 @@ main.o: main.cpp
 
 library: liburlgetter.dll libmangagetter.dll
 
-libmangagetter.dll: MangaGetter.o liburlgetter.dll StringAux.o
-	$(CC) -shared -Wl,-soname,libmangagetter.dll -o libmangagetter.dll MangaGetter.o StringAux.o $(LIBXMLLIBS) -L. -lurlgetter
+libmangagetter.dll: MangaGetter.o liburlgetter.dll StringAux.o XMLAux.o
+	$(CC) -shared -Wl,-soname,libmangagetter.dll -o libmangagetter.dll MangaGetter.o StringAux.o XMLAux.o $(LIBXMLLIBS) -L. -lurlgetter
 
 MangaGetter.o: MangaGetter.cpp
 	$(CC) $(CFLAGS) -fPIC MangaGetter.cpp -o MangaGetter.o $(LIBXMLFLAGS)
 
-liburlgetter.dll: UrlGetter.o
-	$(CC) -shared -Wl,-soname,liburlgetter.dll -o liburlgetter.dll UrlGetter.o $(CURLLIBS)
+liburlgetter.dll: UrlGetter.o StringAux.o
+	$(CC) -shared -Wl,-soname,liburlgetter.dll -o liburlgetter.dll UrlGetter.o StringAux.o $(CURLLIBS)
 
 UrlGetter.o: UrlGetter.cpp
 	$(CC) $(CFLAGS) -fPIC UrlGetter.cpp -o UrlGetter.o
 
-Auxul: StringAux.cpp
+XMLAux.o: XMLAux.cpp
+	$(CC) $(CFLAGS) $(LIBXMLFLAGS) XMLAux.cpp -o XMLAux.o 
+
+StringAux.o: StringAux.cpp
 	$(CC) $(CFLAGS) StringAux.cpp -o StringAux.o
 
 clean:
