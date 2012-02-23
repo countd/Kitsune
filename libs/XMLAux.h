@@ -3,8 +3,8 @@
 #include <string>
 #include <libxml/xmlmemory.h>
 
-std::string getAttrib(xmlNodePtr,std::string);
-xmlNodePtr findSubNode(xmlNodePtr, std::string);
-xmlNodePtr findSubNodeWithAttr(xmlNodePtr, std::string, std::string, std::string);
+std::string getAttrib(xmlNodePtr,const std::string&);
+xmlNodePtr findSubNode(xmlNodePtr, const std::string&);
+xmlNodePtr findSubNodeWithAttr(xmlNodePtr, const std::string&, const std::string&, const std::string&);
 
 #endif

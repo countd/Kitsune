@@ -82,7 +82,7 @@ int reduceToInt(const string& str) {
   return -1;
 }
 
-string leadZeros(string num) {
+string leadZeros(const string& num) {
   string::size_type currentSize = num.size();
   if (currentSize == 3) {
     return num;
@@ -96,8 +96,8 @@ string leadZeros(string num) {
   }
 }
 
-string exten(string file) {
-  string::iterator iter;
+string exten(const string& file) {
+  string::const_iterator iter;
   string dot = ".";
   iter = find_end(file.begin(),file.end(),
 		  dot.begin(), dot.end());
@@ -120,7 +120,7 @@ string itos(int i) {
   return out.str();
 }
 
-void parseUrl(string url, string& series, string& chap, string& page) {
+void parseUrl(const string& url, string& series, string& chap, string& page) {
   vector<string> split = split_url(skipProto(url));
   // first 2 elements are www.mangafox.com and manga, so we don't work with them
 

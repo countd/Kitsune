@@ -5,11 +5,11 @@
 using std::string;
 
 // what if attribute doesn't exist?
-string getAttrib(xmlNodePtr cur, string attrib) {
+string getAttrib(xmlNodePtr cur, const string& attrib) {
   return (char *)xmlGetProp(cur, (const xmlChar *)attrib.c_str());
 }
 
-xmlNodePtr findSubNode(xmlNodePtr cur, string node) {
+xmlNodePtr findSubNode(xmlNodePtr cur, const string& node) {
   cur = cur->xmlChildrenNode;
   
   while (cur != NULL) {
@@ -22,7 +22,7 @@ xmlNodePtr findSubNode(xmlNodePtr cur, string node) {
   return cur; // throw exception here?
 }
 
-xmlNodePtr findSubNodeWithAttr(xmlNodePtr cur, string node, string attrib, string conts) {
+xmlNodePtr findSubNodeWithAttr(xmlNodePtr cur, const string& node, const string& attrib, const string& conts) {
   cur = cur->xmlChildrenNode;
   while (cur != NULL) {
     

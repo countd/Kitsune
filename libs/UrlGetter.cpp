@@ -19,7 +19,7 @@ size_t writeToString(char *data, size_t size, size_t nmemb, string *buffer) {
 }
 
 // TODO: Error checking
-string getPage(string url) {
+string getPage(const string& url) {
   CURL *curl;
   string buffer;
 
@@ -43,7 +43,7 @@ static size_t writeToFile(char *data, size_t size, size_t nmemb, ofstream *file)
   return size*nmemb;
 }
 
-void getPicture(string url, string dir, string series, string chap, string page) {
+void getPicture(const string& url, const string& dir, const string& series, const string& chap, const string& page) {
   CURL *curl;
   string filename = dir + "/" + series + "-c" + leadZeros(chap) + "-p" + leadZeros(page);
   string filetype = exten(url);

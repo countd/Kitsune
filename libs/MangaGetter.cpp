@@ -12,7 +12,7 @@ using std::string;
 using std::cout;
 using std::endl;
 
-string parseXHTMLForLink(string xhtml, string button) {
+string parseXHTMLForLink(const string& xhtml, const string& button) {
   const char* buffer = xhtml.c_str();
   int size = xhtml.size();
 
@@ -48,15 +48,15 @@ string parseXHTMLForLink(string xhtml, string button) {
 
 }
 
-string parseXHTMLForNext(string xhtml) {
+string parseXHTMLForNext(const string& xhtml) {
   return parseXHTMLForLink(xhtml, "btn next_page");
 }
 
-string parseXHTMLForPrev(string xhtml) {
+string parseXHTMLForPrev(const string& xhtml) {
   return parseXHTMLForLink(xhtml, "btn prev_page");
 }
 
-string parseXHTMLForImage(string xhtml) {
+string parseXHTMLForImage(const string& xhtml) {
   const char* buffer = xhtml.c_str();
   int size = xhtml.size();
   
@@ -88,13 +88,13 @@ string parseXHTMLForImage(string xhtml) {
   return imgUrl;
 }
 
-void getImageByUrlAndData(string url, string dir, string series, string chap, string page) {
+void getImageByUrlAndData(const string& url, const string&  dir, const string& series, const string& chap, const string& page) {
   string imgUrl =  parseXHTMLForImage(getPage(url));
   
   getPicture(imgUrl, dir, series, chap, page);
 }
 
-void getImageByUrl(string url, string dir) {
+void getImageByUrl(const string& url, const string& dir) {
   string series, chapter, page;
   parseUrl(url, series, chapter, page);
   getImageByUrlAndData(url, dir, series, chapter,page);
