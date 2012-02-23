@@ -8,7 +8,7 @@ EXECUTABLE=tester
 all: library $(EXECUTABLE)
 
 $(EXECUTABLE): library main.o
-	$(CC) main.o -o $(EXECUTABLE) -L. -lmangagetter
+	$(CC) main.o -o $(EXECUTABLE) -L. -lmangagetter -lurlgetter
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) main.cpp -o main.o

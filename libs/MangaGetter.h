@@ -3,4 +3,6 @@
 #include <string>
 
 void getImageByUrl(std::string,std::string);
+std::string parseXHTMLForNext(std::string);
+std::string parseXHTMLForPrev(std::string);
 #endif

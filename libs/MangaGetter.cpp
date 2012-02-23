@@ -12,6 +12,50 @@ using std::string;
 using std::cout;
 using std::endl;
 
+string parseXHTMLForLink(string xhtml, string button) {
+  const char* buffer = xhtml.c_str();
+  int size = xhtml.size();
+
+  xmlDocPtr doc;
+  xmlNodePtr cur;
+
+  doc = xmlParseMemory(buffer, size);
+  if (doc == NULL) {
+    std::cerr << "Could not parse XHTML" << endl;
+    return "";
+  }
+
+  cur = xmlDocGetRootElement(doc);
+
+  if (cur == NULL) {
+    std::cerr << "Empty XHTML" << endl;
+    xmlFreeDoc(doc);
+    return "";
+  }
+
+  cur = findSubNode(cur, "body");
+  cur = findSubNodeWithAttr(cur, "div", "class", "widepage page");
+  cur = findSubNodeWithAttr(cur, "div", "id", "top_center_bar");
+  cur = findSubNodeWithAttr(cur, "form", "id", "top_bar");
+  cur = findSubNodeWithAttr(cur, "div", "class", "r m");
+  cur = findSubNodeWithAttr(cur, "a", "class", button);
+
+  string url = getAttrib(cur, "href");
+
+  xmlFreeDoc(doc);
+
+  return url;
+
+}
+
+string parseXHTMLForNext(string xhtml) {
+  return parseXHTMLForLink(xhtml, "btn next_page");
+}
+
+string parseXHTMLForPrev(string xhtml) {
+  return parseXHTMLForLink(xhtml, "btn prev_page");
+}
+
 string parseXHTMLForImage(string xhtml) {
   const char* buffer = xhtml.c_str();
   int size = xhtml.size();
