@@ -101,8 +101,11 @@ string exten(string file) {
   string dot = ".";
   iter = find_end(file.begin(),file.end(),
 		  dot.begin(), dot.end());
+
   // iter points to ., so we advance it
-  iter++;
+  if (iter != file.end())
+    iter++;
+
   if (iter != file.end()) {
     string ext(iter,file.end()); // correct value?
     return ext;

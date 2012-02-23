@@ -37,7 +37,7 @@ void parseXHTMLForImage(string xhtml, string& ret) {
   cur = findSubNodeWithAttr(cur, "div", "id", "viewer");
   cur = findSubNode(cur, "a");
   cur = findSubNode(cur, "img");
-  string imgUrl((char *)xmlGetProp(cur, (const xmlChar *)"src"));
+  string imgUrl = getAttrib(cur, "src");
   
   xmlFreeDoc(doc);
 
