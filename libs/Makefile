@@ -10,9 +10,9 @@ EXECUTABLE=kitsune
 # all also compiles a basic interface -- command line taking two arguments: a url and a dir
 
 
-all: libkitsune.dll $(EXECUTABLE)
+all: libkitsune.so $(EXECUTABLE)
 	strip --strip-unneeded $(EXECUTABLE)
-	strip --strip-unneeded libkitsune.dll
+	strip --strip-unneeded libkitsune.so
 
 stripexec: $(EXECUTABLE)
 	strip --strip-unneeded $(EXECUTABLE)
@@ -23,34 +23,34 @@ $(EXECUTABLE): interface.o
 interface.o: interface.cpp
 	$(CC) $(CFLAGS) interface.cpp -o interface.o
 
-striplib: libkitsune.dll
-	strip --strip-unneeded libkitsune.dll
+striplib: libkitsune.so
+	strip --strip-unneeded libkitsune.so
 
-kitsunelib: libkitsune.dll
+kitsunelib: libkitsune.so
 
-libkitsune.dll: MangaGetter.o StringAux.o XMLAux.o UrlGetter.o
-	$(CC) -shared -Wl,-soname,libkitsune.dll -o libkitsune.dll MangaGetter.o StringAux.o XMLAux.o UrlGetter.o $(LIBXMLLIBS) $(CURLLIBS)
+libkitsune.so: MangaGetter.o StringAux.o XMLAux.o UrlGetter.o
+	$(CC) -shared -Wl,-soname,libkitsune.so -o libkitsune.so MangaGetter.o StringAux.o XMLAux.o UrlGetter.o $(LIBXMLLIBS) $(CURLLIBS)
 	cp MangaGetter.h Kitsune.h
 
-libraries: liburlgetter.dll libmangagetter.dll
+libraries: liburlgetter.so libmangagetter.so
 
-libmangagetter.dll: MangaGetter.o liburlgetter.dll StringAux.o XMLAux.o
-	$(CC) -shared -Wl,-soname,libmangagetter.dll -o libmangagetter.dll MangaGetter.o StringAux.o XMLAux.o $(LIBXMLLIBS) -L. -lurlgetter
+libmangagetter.so: MangaGetter.o liburlgetter.so StringAux.o XMLAux.o
+	$(CC) -shared -Wl,-soname,libmangagetter.so -o libmangagetter.so MangaGetter.o StringAux.o XMLAux.o $(LIBXMLLIBS) -L. -lurlgetter
 
 MangaGetter.o: MangaGetter.cpp
 	$(CC) $(CFLAGS) -fPIC MangaGetter.cpp -o MangaGetter.o $(LIBXMLFLAGS)
 
-liburlgetter.dll: UrlGetter.o StringAux.o
-	$(CC) -shared -Wl,-soname,liburlgetter.dll -o liburlgetter.dll UrlGetter.o StringAux.o $(CURLLIBS)
+liburlgetter.so: UrlGetter.o StringAux.o
+	$(CC) -shared -Wl,-soname,liburlgetter.so -o liburlgetter.so UrlGetter.o StringAux.o $(CURLLIBS)
 
 UrlGetter.o: UrlGetter.cpp
 	$(CC) $(CFLAGS) -fPIC UrlGetter.cpp -o UrlGetter.o
 
 XMLAux.o: XMLAux.cpp
-	$(CC) $(CFLAGS) $(LIBXMLFLAGS) XMLAux.cpp -o XMLAux.o 
+	$(CC) $(CFLAGS) $(LIBXMLFLAGS) -fPIC XMLAux.cpp -o XMLAux.o 
 
 StringAux.o: StringAux.cpp
-	$(CC) $(CFLAGS) StringAux.cpp -o StringAux.o
+	$(CC) $(CFLAGS) -fPIC StringAux.cpp -o StringAux.o
 
 clean:
-	rm *o *dll *exe Kitsune.h
+	rm *so *o $(EXECUTABLE) Kitsune.h
