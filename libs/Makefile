@@ -32,6 +32,18 @@ libkitsune.so: MangaGetter.o StringAux.o XMLAux.o UrlGetter.o
 	$(CC) -shared -Wl,-soname,libkitsune.so -o libkitsune.so MangaGetter.o StringAux.o XMLAux.o UrlGetter.o $(LIBXMLLIBS) $(CURLLIBS)
 	cp MangaGetter.h Kitsune.h
 
+liblibrarian.so: Librarian.o libpacker.a
+	$(CC) -shared -Wl,-soname,liblibrarian.so -o liblibrarian.so Librarian.o -L. -lpacker
+
+Librarian.o: Librarian.cpp
+	$(CC) $(CFLAGS) -fPIC -c -o Librarian.o Librarian.cpp
+
+libpacker.a: Packer.o
+	ar rcs libpacker.a Packer.o
+
+Packer.o: Packer.c
+	gcc -c -fPIC -o Packer.o Packer.c
+
 libraries: liburlgetter.so libmangagetter.so
 
 libmangagetter.so: MangaGetter.o liburlgetter.so StringAux.o XMLAux.o
@@ -53,4 +65,4 @@ StringAux.o: StringAux.cpp
 	$(CC) $(CFLAGS) -fPIC StringAux.cpp -o StringAux.o
 
 clean:
-	rm *so *o $(EXECUTABLE) Kitsune.h
+	rm *.a *.so *.o $(EXECUTABLE) Kitsune.h
