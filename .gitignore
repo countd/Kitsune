@@ -1,6 +1,7 @@
 *~
-*dll
-*so
-*o
-*exe
+*.dll
+*.so
+*.o
+*.exe
+*.a
 *#*#

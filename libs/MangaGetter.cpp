@@ -2,6 +2,7 @@
 #include "UrlGetter.h"
 #include "StringAux.h"
 #include "XMLAux.h"
+#include "Librarian.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -124,27 +125,44 @@ vector<string> getChapterByPage(const string& url) {
 
 }
 
-void getImageByUrlAndData(const string& url, const string&  dir, const string& series, const string& chap, const string& page) {
+string getImageByUrlAndData(const string& url, const string&  dir, const string& series, const string& chap, const string& page) {
   string imgUrl =  parseXHTMLForImage(getPage(url));
   
-  getPicture(imgUrl, dir, series, chap, page);
+  return getPicture(imgUrl, dir, series, chap, page);
 }
 
-void getImageByUrl(const string& url, const string& dir) {
+string getImageByUrl(const string& url, const string& dir) {
   string series, chapter, page;
   parseUrl(url, series, chapter, page);
-  getImageByUrlAndData(url, dir, series, chapter,page);
+  return getImageByUrlAndData(url, dir, series, chapter,page);
 }
 
-void getChapter(const string& url, const string& dir) {
+vector<string> getChapter(const string& url, const string& dir) {
   vector<string> pages = getChapterByPage(url);
+  vector<string> files;
 
   vector<string>::const_iterator iter = pages.begin();
   
   while(iter != pages.end()) {
-    getImageByUrl(*iter, dir);
+    string file = getImageByUrl(*iter, dir);
+    files.push_back(file);
     iter++;
   }
 
   cout << "Finished fetching chapter!" << endl;
+  return files;
+}
+
+string getAndPackChapter(const string& url, const string& dir) {
+  vector<string> files = getChapter(url, dir);
+
+  string f = files[0];
+  string direct = filenameToDir(f);
+  string base = filenameToBasename(f);
+
+  string basename = direct + "/"  + base;
+
+  archive(basename, files);
+
+  return basename;
 }

@@ -3,5 +3,5 @@
 #include <string>
 
 std::string getPage(const std::string&);
-void getPicture(const std::string&,const std::string&,const std::string&,const std::string&,const std::string&);
+std::string getPicture(const std::string&,const std::string&,const std::string&,const std::string&,const std::string&);
 #endif

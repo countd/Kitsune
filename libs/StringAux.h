@@ -13,4 +13,6 @@ void parseUrl(const std::string&,std::string&,std::string&,std::string& page);
 std::string assembleUrl(const std::vector<std::string>& vec);
 std::string followRelative(const std::string&, const std::string&);
 bool isExt(const std::string&, const std::string&);
+std::string filenameToBasename(const std::string&);
+std::string filenameToDir(const std::string&);
 #endif

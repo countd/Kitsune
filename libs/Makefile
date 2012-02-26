@@ -18,7 +18,7 @@ stripexec: $(EXECUTABLE)
 	strip --strip-unneeded $(EXECUTABLE)
 
 $(EXECUTABLE): interface.o
-	$(CC) interface.o -o $(EXECUTABLE) -L. -lkitsune
+	$(CC) interface.o -o $(EXECUTABLE) -L. -lkitsune -llibrarian
 
 interface.o: interface.cpp
 	$(CC) $(CFLAGS) interface.cpp -o interface.o
@@ -28,12 +28,12 @@ striplib: libkitsune.so
 
 kitsunelib: libkitsune.so
 
-libkitsune.so: MangaGetter.o StringAux.o XMLAux.o UrlGetter.o
-	$(CC) -shared -Wl,-soname,libkitsune.so -o libkitsune.so MangaGetter.o StringAux.o XMLAux.o UrlGetter.o $(LIBXMLLIBS) $(CURLLIBS)
+libkitsune.so: MangaGetter.o StringAux.o XMLAux.o UrlGetter.o liblibrarian.so
+	$(CC) -shared -Wl,-soname,libkitsune.so -o libkitsune.so MangaGetter.o StringAux.o XMLAux.o UrlGetter.o -L. -llibrarian $(LIBXMLLIBS) $(CURLLIBS)
 	cp MangaGetter.h Kitsune.h
 
 liblibrarian.so: Librarian.o libpacker.a
-	$(CC) -shared -Wl,-soname,liblibrarian.so -o liblibrarian.so Librarian.o -L. -lpacker
+	$(CC) -shared -Wl,-soname,liblibrarian.so -o liblibrarian.so Librarian.o -L. -lpacker -larchive
 
 Librarian.o: Librarian.cpp
 	$(CC) $(CFLAGS) -fPIC -c -o Librarian.o Librarian.cpp

@@ -58,6 +58,57 @@ vector<string> split_url(const string& str) {
   return ret;
 }
 
+bool not_hypen(char c) {
+  return c != '-';
+}
+
+bool is_hypen(char c) {
+  return c == '-';
+}
+
+vector<string> splitHypens(const string& str) {
+  typedef string::const_iterator iter;
+  vector<string> ret;
+  
+  iter i = str.begin();
+  while (i != str.end()) {
+    
+    i = find_if(i, str.end(), not_hypen);
+
+    iter j = find_if(i, str.end(), is_hypen);
+
+    if (i != str.end())
+      ret.push_back(string(i, j));
+    i = j;
+    if (i != str.end())
+      i++;
+  }
+  return ret;
+
+}
+
+string filenameToBasename(const string& filename) {
+  vector<string> hier = split_url(filename);
+  string file = hier.back();
+  vector<string> split = splitHypens(file);
+
+  split.pop_back();
+
+  if (split.empty())
+    return ""; // throw
+  
+  stringstream out;
+  vector<string>::const_iterator iter = split.begin();
+  
+  out << *iter;
+  while(++iter != split.end()) {
+    out << "-";
+    out << *iter;
+  }
+
+  return out.str();
+}
+
 string assembleUrl(const vector<string>& vec) {
   if (vec.empty()) {
     return "";
@@ -70,6 +121,22 @@ string assembleUrl(const vector<string>& vec) {
   
   out << *iter;
   while(++iter != vec.end()) {
+    out << "/";
+    out << *iter;
+  }
+
+  return out.str();
+}
+
+string filenameToDir(const string& filename) {
+  vector<string> hier = split_url(filename);
+  hier.pop_back();
+  
+  stringstream out;
+  vector<string>::const_iterator iter = hier.begin();
+
+  out << *iter;
+  while(++iter != hier.end()) {
     out << "/";
     out << *iter;
   }

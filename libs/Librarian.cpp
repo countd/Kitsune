@@ -9,7 +9,7 @@ using std::string;
 using std::vector;
 using std::strncpy;
 
-void archive(string basename, vector<string> files) {
+void archive(const string& basename, const vector<string>& files) {
   if (files.size() < 1)
     return;
 

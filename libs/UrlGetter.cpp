@@ -46,7 +46,7 @@ static size_t writeToFile(char *data, size_t size, size_t nmemb, ofstream *file)
   return size*nmemb;
 }
 
-void getPicture(const string& url, const string& dir, const string& series, const string& chap, const string& page) {
+string getPicture(const string& url, const string& dir, const string& series, const string& chap, const string& page) {
   CURL *curl;
   string filename = dir + "/" + series + "-c" + leadZeros(chap) + "-p" + leadZeros(page);
   string filetype = exten(url);
@@ -64,4 +64,6 @@ void getPicture(const string& url, const string& dir, const string& series, cons
 
   curl_easy_cleanup(curl);
   cout << "Fetched " << fullname << endl;
+
+  return fullname;
 }

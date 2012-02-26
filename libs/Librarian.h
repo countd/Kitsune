@@ -3,5 +3,5 @@
 #include <string>
 #include <vector>
 
-void archive(std::string, std::vector<std::string>);
+void archive(const std::string&, const std::vector<std::string>&);
 #endif

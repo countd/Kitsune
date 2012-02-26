@@ -3,5 +3,7 @@
 #include <string>
 #include <vector>
 
-void getChapter(const std::string& url, const std::string& dir);
+std::vector<std::string> getChapter(const std::string& url, const std::string& dir);
+
+std::string getAndPackChapter(const std::string& url, const std::string& dir);
 #endif

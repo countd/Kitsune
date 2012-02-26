@@ -1,8 +1,11 @@
 #include "Kitsune.h"
 #include <string>
 #include <iostream>
+#include <vector>
+#include "StringAux.h"
 
 using std::string;
+using std::vector;
 using std::cout;
 using std::endl;
 
@@ -16,8 +19,8 @@ int main(int argc, char** argv) {
 
   string url = argv[1];
   string dir = argv[2];
-
-  getChapter(url,dir); // WARNING! NO CHEKING!!
+  
+  cout << "Packed into " <<  getAndPackChapter(url,dir) << endl; // WARNING! NO CHEKING!!
 
   return 0;
 }
