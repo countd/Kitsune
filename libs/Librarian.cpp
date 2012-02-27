@@ -19,7 +19,7 @@ void archive(const string& basename, const vector<string>& files) {
   //allocate memory and copy strings
   for (size_t i = 0; i < files.size(); i++) {
     cfiles[i] = new char[files[i].size()+1];
-    strncpy(cfiles[i], files[i].c_str(), files[i].size());
+    strncpy(cfiles[i], files[i].c_str(), files[i].size()+1);
   }
 
   write_archive(filename.c_str(), (const char**)cfiles);
